@@ -1,0 +1,12 @@
+{
+  "name": "bps-data-finder-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "node tests/e2e/run.mjs",
+    "serve": "node tests/e2e/serve.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "25.16.0"
+  }
+}

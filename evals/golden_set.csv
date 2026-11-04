@@ -1,0 +1,89 @@
+question,targets,source,notes
+TPT per provinsi 2025,var:0000:543|var:0000:2562|simdasi:0000:WjNUbVprTDh4SjN4RXhLaUptMHZqQT09,claude,pooled judging added 1
+persentase penduduk miskin tiap provinsi,var:0000:192|simdasi:0000:REdXbUdSVjIzUlJTT0Z5Vy9Rd3ZmQT09,claude,pooled judging added 1
+IPM semua provinsi,var:0000:494|var:0000:2207|var:0000:202,claude,
+inflasi bulanan indonesia mtm,var:0000:1|statictable:0000:908|statictable:0000:907|statictable:0000:913,claude,pooled judging added 2
+proyeksi penduduk per provinsi sampai 2035,statictable:0000:1274,claude,
+rata rata gaji buruh per provinsi,var:0000:1521|var:0000:2563|statictable:0000:2096|statictable:0000:2097|statictable:0000:2130|statictable:0000:2189|statictable:0000:2233|statictable:0000:2255,claude,pooled judging added 6
+gini ratio per provinsi,var:0000:98,claude,
+NTP per subsektor,var:0000:13|publication:0000:7577414ca4999b690ff6818d,claude,pooled judging added 1
+produksi padi tiap provinsi,var:0000:1498|var:0000:2506|simdasi:0000:d3ZjM280TU9FanlkdDRETUV5aVdndz09,claude,pooled judging added 1
+akses air minum layak rumah tangga per provinsi,var:0000:845|var:0000:854|simdasi:0000:ME4xN1lOa1hRV3BHcXhZVFRJR1RNZz09,claude,pooled judging added 1
+life expectancy by province,var:0000:501|var:0000:2273,claude,english
+jumlah kunjungan wisman per bulan,var:0000:1150|var:0000:1017|var:0000:74,claude,pooled judging added 1
+garis kemiskinan provinsi,var:0000:195|statictable:1200:1947,claude,pooled judging added 1
+berapa persen rumah tangga yang pakai listrik PLN,statictable:0000:1555|var:0000:87|var:0000:856|var:0000:2832,claude,pooled judging added 3
+pertumbuhan ekonomi indonesia triwulan II 2026,pressrelease:0000:169699,claude,
+BRS kemiskinan maret 2026,pressrelease:0000:167857,claude,
+buku statistik indonesia 2026,publication:0000:a43f03f45543dc4e9942f44c,claude,
+publikasi sakernas agustus 2025,publication:0000:42a75ee61332755586fdfcdd|publication:0000:cd78a8ff95fcf228a712e8ac|publication:0000:7cafd1df082c81784e0e15f8|publication:0000:5fe58c9723acafc73fb95bff,claude,pooled judging added 2
+unemployment rate aceh by regency,var:1100:206|var:0000:2824,claude,english
+angka kemiskinan aceh terbaru,pressrelease:1100:167860|var:1100:618|simdasi:1100:dmhsbUpvaVJRT1lrd1M5S1ljOXp0UT09|simdasi:1100:REdXbUdSVjIzUlJTT0Z5Vy9Rd3ZmQT09|var:1100:42|var:1100:41|var:1100:287,claude,pooled judging added 1; pooled judging (rewrite) added 5
+persentase penduduk miskin kabupaten kota sumut,var:1200:73|statictable:1200:1382|var:0000:621|simdasi:1200:REdXbUdSVjIzUlJTT0Z5Vy9Rd3ZmQT09,claude,pooled judging added 1
+sumut dalam angka 2026,publication:1200:cc9ebe7b48da2db36146409c,claude,
+PDRB ADHB kabupaten kota sumatera barat,var:1300:785,claude,
+jumlah penduduk per kabupaten riau,var:1400:32|var:1400:458|simdasi:1400:WVRlTTcySlZDa3lUcFp6czNwbHl4QT09,claude,pooled judging added 1
+inflasi yoy provinsi jambi,var:1500:2143,claude,
+produksi padi sumatera selatan,var:1600:394|var:1600:783|simdasi:1600:d3ZjM280TU9FanlkdDRETUV5aVdndz09|publication:1600:39af5cc2c4f98288a60176c5,claude,pooled judging added 2
+jumlah SD dan murid kota bandung,simdasi:3273:4.1.3,claude,
+kepadatan penduduk per kecamatan kabupaten bogor,simdasi:3201:3.1.1,claude,
+IPM kabupaten kota di jawa barat,simdasi:3200:4.6.5|var:0000:7,claude,relabel after the 3200 search pull (province tables)
+luas kecamatan di kabupaten bandung,simdasi:3204:1.1.1,claude,
+berapa tenaga kerja yang terserap investasi PMDN per kabupaten di lampung,var:1800:795,claude-seeded,
+pertumbuhan ekonomi kabupaten kota jawa tengah,var:3300:1743|var:3300:2380|simdasi:3300:ZzBrcmpMbnAyV1RzRG1EaDNvZ3VIZz09|statictable:3300:1428|var:3300:2382,claude-seeded,pooled judging added 2; pooled judging (full catalog) added 2
+P2 kemiskinan jawa barat,var:3200:942,claude-seeded,
+rice yield per hectare south sumatra,var:1600:396|var:1600:782,claude-seeded,english; pooled judging added 1
+PDRB kota sungai penuh per sektor harga konstan,var:1500:1488|simdasi:1572:UklLSnFZZnMzMlJiSWpMOExJODIrQT09,claude-seeded,; pooled judging (full catalog) added 1
+produksi manggis jambi,var:1500:593,claude-seeded,
+jumlah koperasi per kabupaten provinsi jambi,var:1500:1613,claude-seeded,
+komponen IPM bengkulu harapan hidup lama sekolah pengeluaran,var:1700:585|pressrelease:1700:149629,claude-seeded,pooled judging added 1
+persentase penduduk kepri yang pakai internet,var:2100:714|var:0000:1225|var:0000:558,claude-seeded,pooled judging added 2
+NTP perkebunan babel,var:1900:1011|var:1900:1017|var:1900:1206,claude-seeded,pooled judging (region filter) added 1; pooled judging (title weight) added 1
+indeks kedalaman kemiskinan tiap provinsi kota dan desa,var:0000:503,claude-seeded,
+pendapatan daerah kabupaten majalengka,var:3200:488|statictable:3200:134,claude-seeded,; pooled judging (title weight) added 1
+national transfer accounts indonesia life cycle deficit,statictable:0000:2276,claude-seeded,english
+produksi daging ayam per kabupaten jawa barat,statictable:3200:387|simdasi:3200:dWhmNFl6WXYyR093R2NjTGM3NG9idz09,claude-seeded,pooled judging added 1
+gaji buruh menurut pendidikan terakhir,statictable:0000:2069|statictable:0000:2133|statictable:0000:2194|statictable:0000:2067|statictable:0000:1989|statictable:0000:2045|statictable:0000:2046|statictable:0000:2047|statictable:0000:1991|statictable:0000:2100|statictable:0000:2192|statictable:0000:2234|var:0000:2818|var:0000:575|var:0000:2474,claude-seeded,pooled judging added 11; pooled judging (title weight) added 3
+cakupan imunisasi balita per kabupaten sumut,statictable:1200:1907|statictable:1200:1691|statictable:1200:1213|statictable:1200:2770|statictable:1200:1288,claude-seeded,pooled judging added 4
+harga sembako di pematangsiantar,statictable:1200:2882|statictable:1200:2020|statictable:1200:1358|publication:0000:bf36d878c5798c171a033709|publication:0000:35a1617def25a0a6c43fddf6,claude-seeded,pooled judging added 2; pooled judging (full catalog) added 2
+kemiskinan kabupaten di bengkulu 2021,statictable:1700:1203,claude-seeded,
+rumah rusak karena bencana per kabupaten bengkulu,simdasi:1700:R1lONkliWXNyUjRqMUdlL2NXK0k2dz09,claude-seeded,
+jumlah motor dan mobil di kepri per kabupaten,simdasi:2100:V2w4dFkwdFNLNU5mSE95Und2UDRMQT09,claude-seeded,
+berapa persen penduduk jambi yang punya BPJS,simdasi:1500:UUROM3lMeGsxZ0czT2xFeEJsK0VWZz09,claude-seeded,
+luas panen jahe kunyit sumatera utara,simdasi:1200:bkZ2NDZsYno2VDR2di9TZldvUUExdz09|statictable:1200:2325|statictable:1200:2572|statictable:1200:2996|statictable:1200:2323|statictable:1200:2994|statictable:1200:1513|var:1200:558|simdasi:1200:MnBlci91MjhhS1Fxb1ZmS2NCVUxVZz09,claude-seeded,pooled judging added 2; pooled judging (full catalog) added 6
+PDRB per kapita kabupaten kota bengkulu,simdasi:1700:akhBTUg3b1NjSUNJTExVbE4xT2NMUT09|var:1700:419,claude-seeded,pooled judging added 1
+penduduk usia kerja menurut kegiatan riau,simdasi:1400:NU16V0IxVEJzQXdmTTBKOEJsWUVWQT09|simdasi:1400:UEJPZGxjcUxvWWdkWmFLRUpZanJQUT09|simdasi:1400:WVFiQzIxdEdNc05oVW1HVEY4b2pjdz09,claude-seeded,pooled judging added 2
+literacy rate riau by age group,simdasi:1400:NTVUaUI4bDNBR1NpZDFLZTBISStpdz09,claude-seeded,english
+desa yang kena bencana di kota cirebon,simdasi:3274:4.3.3,claude-seeded,
+daftar perusahaan industri besar sedang babel,publication:1900:1e768b04c2e1925dab2d9d13,claude-seeded,
+data impor bulanan februari 2025,publication:0000:2f12031a16a4c537496ca7f7|pressrelease:0000:150693,claude-seeded,pooled judging added 1
+indikator konstruksi triwulan 1 2025,publication:0000:bda0b92469ca6711d3a6bf57,claude-seeded,
+profil UMK industri mikro kecil bengkulu,publication:1700:77ced503da57417bb2b3bbb3,claude-seeded,
+BRS DKI jakarta januari 2025,publication:3100:8054f129e7e5541d0a079163,claude-seeded,
+laporan inflasi sumsel 2025,publication:1600:0a0d6f646bccd5111abb399e|pressrelease:1600:170005,claude-seeded,pooled judging added 1
+inflasi qtq riau triwulan 4 2025,publication:1400:7b70d6dcd0b8bc7ea68b1905,claude-seeded,
+pertumbuhan ekonomi kepri triwulan IV 2025,pressrelease:2100:169738,claude-seeded,
+hotel occupancy rate lampung april 2025,pressrelease:1800:152044,claude-seeded,english
+ekspor aceh januari 2026,pressrelease:1100:174007,claude-seeded,
+wisman ke sumut oktober 2025,pressrelease:1200:152220,claude-seeded,
+ekonomi babel tw I 2026 tumbuh berapa,pressrelease:1900:169749|publication:1900:89074f7d0000d756a84e8fc3,claude-seeded,pooled judging added 1
+inflasi yoy sumbar desember 2024,pressrelease:1300:151448|var:1300:172,claude-seeded,pooled judging added 1
+jumlah penumpang pesawat di aceh desember 2024,pressrelease:1100:150944,claude-seeded,
+TPT kota bandung 2025,simdasi:3200:WjNUbVprTDh4SjN4RXhLaUptMHZqQT09|var:0000:2824|var:3200:73|var:3200:788|var:3200:837,claude-ladder,kab/kota has no own table; answered at province or national level
+jumlah penduduk miskin kabupaten garut,simdasi:3200:REdXbUdSVjIzUlJTT0Z5Vy9Rd3ZmQT09|statictable:3200:121|var:0000:619|var:3200:83,claude-ladder,kab/kota has no own table; answered at province or national level
+IPM kabupaten sleman,simdasi:3400:WnFhSGhLZ2xHNmlZdkRRYzRsaG5Hdz09|var:0000:7,claude-ladder,kab/kota has no own table; answered at province or national level
+angka harapan hidup kabupaten banyumas,statictable:3300:2613|var:0000:455|var:3300:2035|var:3300:2412|var:3300:780|var:3300:781,claude-ladder,kab/kota has no own table; answered at province or national level
+PDRB per kapita kabupaten badung,simdasi:5100:OXA5V0V0c1NhM09HUnZ4UHhnaHlWZz09|simdasi:5100:akhBTUg3b1NjSUNJTExVbE4xT2NMUT09|var:5100:172,claude-ladder,kab/kota has no own table; answered at province or national level
+inflasi Maret 2025 Sumatera Barat,pressrelease:1300:151553,claude-period,month / quarter / year in the question
+pertumbuhan ekonomi Riau triwulan II 2025,pressrelease:1400:150779,claude-period,month / quarter / year in the question
+NTP Juni 2025 Sumut,pressrelease:1200:150316,claude-period,month / quarter / year in the question
+ekspor impor Jakarta Februari 2025,pressrelease:3100:152364,claude-period,month / quarter / year in the question
+inflasi Desember 2024 Aceh,pressrelease:1100:151446,claude-period,month / quarter / year in the question
+wisman Aceh April 2026,pressrelease:1100:169444,claude-period,month / quarter / year in the question
+IHK Jakarta Juli 2025,pressrelease:3100:151700,claude-period,month / quarter / year in the question
+statistik nilai tukar petani 2024,publication:0000:291aa5af0e7cc933bfe5b6a7,claude-period,month / quarter / year in the question
+aceh dalam angka 2025,publication:1100:7f5ac7bf4db9fde8b4644778,claude-period,month / quarter / year in the question
+pertumbuhan ekonomi indonesia triwulan I 2026,pressrelease:0000:169698,claude-period,month / quarter / year in the question
+persentase penduduk miskin Jambi September 2025,pressrelease:1500:167829,claude-period,month / quarter / year in the question
+keadaan ketenagakerjaan DKI Jakarta Februari 2025,pressrelease:3100:152743,claude-period,month / quarter / year in the question
+Riau economic growth Q2 2025,pressrelease:1400:150779,claude-period,english

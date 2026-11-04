@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cari Data BPS</title>
+<meta name="description" content="Cari tabel, publikasi, dan berita resmi statistik BPS pakai bahasa sehari-hari. Angka tabelnya langsung tampil.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5cad'/%3E%3Crect x='7' y='16' width='5' height='9' fill='white'/%3E%3Crect x='14' y='10' width='5' height='15' fill='white'/%3E%3Crect x='21' y='6' width='5' height='19' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="./">
+    <svg class="logo" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+      <rect class="logo-bg" width="32" height="32" rx="7"/>
+      <rect class="logo-bar" x="7" y="16" width="5" height="9"/>
+      <rect class="logo-bar" x="14" y="10" width="5" height="15"/>
+      <rect class="logo-bar" x="21" y="6" width="5" height="19"/>
+    </svg>
+    Cari Data BPS
+  </a>
+  <button type="button" id="help" class="icon" aria-label="Cara pakai" aria-expanded="false" aria-controls="welcome">?</button>
+</header>
+
+<main>
+  <form id="search" role="search" novalidate>
+    <h1 id="title">Mau cari data BPS apa?</h1>
+    <p class="lead">Tulis pertanyaan pakai bahasa biasa. Hasilnya tabel, publikasi, atau berita resmi BPS yang cocok. Angka tabel langsung tampil di sini.</p>
+    <div class="field">
+      <input id="q" name="q" type="search" maxlength="200" autocomplete="off" enterkeyhint="search" aria-labelledby="title" placeholder="Contoh: inflasi Oktober 2026" aria-describedby="q-error">
+      <button type="submit" id="go" class="primary">Cari</button>
+    </div>
+    <p id="q-error" class="field-error" role="alert"></p>
+    <div id="examples" class="chips" aria-label="Contoh pertanyaan">
+      <button type="button" class="chip">Tingkat pengangguran Jawa Barat</button>
+      <button type="button" class="chip">Jumlah penduduk miskin Kabupaten Garut</button>
+      <button type="button" class="chip">Inflasi Indonesia Oktober 2026</button>
+      <button type="button" class="chip">IPM Kabupaten Sleman</button>
+      <button type="button" class="chip">Produksi padi Sumatera Selatan</button>
+    </div>
+  </form>
+
+  <section id="welcome" class="card welcome" hidden aria-labelledby="welcome-title">
+    <h2 id="welcome-title">Cara pakai</h2>
+    <ol class="steps">
+      <li>Tulis datanya dan daerahnya, misalnya "penduduk miskin Garut".</li>
+      <li>Pilih hasil yang judulnya paling pas. Untuk tabel, tekan Lihat Angkanya. Publikasi dan berita resmi dibuka di BPS.</li>
+      <li>Cek judul dan tahunnya dulu, karena hasil pencarian bisa kurang pas. Angka di tabel langsung dari BPS.</li>
+    </ol>
+    <div class="actions">
+      <button type="button" id="welcome-start" class="primary">Mengerti</button>
+    </div>
+  </section>
+
+  <p id="status" class="status" aria-live="polite"></p>
+  <p id="regions" class="regions"></p>
+  <ol id="results" class="results"></ol>
+</main>
+
+<footer>
+  <p>Data dari Badan Pusat Statistik (BPS). Situs ini bukan buatan BPS dan bukan produk resmi BPS.</p>
+  <p>Pertanyaan dan penilaian "Hasil ini cocok?" dicatat tanpa identitas, untuk memperbaiki pencarian.</p>
+  <p>This service uses the Badan Pusat Statistik (BPS) API.</p>
+</footer>
+
+<div id="backdrop" hidden></div>
+<aside id="panel" class="sheet" role="dialog" aria-modal="true" aria-labelledby="panel-title" hidden>
+  <div class="sheet-head">
+    <h2 id="panel-title"></h2>
+    <button type="button" id="panel-close" class="icon" aria-label="Tutup">&times;</button>
+  </div>
+  <p id="panel-status" class="status" aria-live="polite"></p>
+  <div id="answer" class="answer" hidden></div>
+  <div class="sheet-tools">
+    <div id="period-box" hidden>
+      <label for="period">Tahun</label>
+      <select id="period"></select>
+    </div>
+    <p id="unit" class="small"></p>
+  </div>
+  <div id="table-wrap" class="table-wrap" tabindex="0" role="region" aria-label="Tabel angka" hidden></div>
+  <p id="legend" class="small" hidden><span class="swatch"></span> Daerah yang dicari</p>
+  <p id="panel-note" class="small"></p>
+  <p id="panel-source" class="small"></p>
+  <p id="panel-fetched" class="small"></p>
+  <div id="panel-tools" class="actions" hidden>
+    <button type="button" id="panel-cite" class="secondary">Salin Kutipan</button>
+    <button type="button" id="panel-csv" class="secondary">Unduh CSV</button>
+    <button type="button" id="panel-share" class="secondary">Salin Tautan</button>
+  </div>
+  <p id="panel-down" class="small" hidden></p>
+  <a id="panel-link" class="secondary linkbtn" target="_blank" rel="noopener noreferrer">Buka di BPS</a>
+</aside>
+</body>
+</html>

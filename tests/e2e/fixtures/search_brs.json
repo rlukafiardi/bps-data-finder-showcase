@@ -1,0 +1,80 @@
+{
+  "question": "inflasi indonesia oktober 2026",
+  "rewrite": {
+    "query": "Inflasi Indonesia Oktober 2026",
+    "region": "Indonesia"
+  },
+  "regions": [
+    {
+      "id": "0000",
+      "name": "Indonesia"
+    }
+  ],
+  "results": [
+    {
+      "doc_id": "pressrelease:0000:170347",
+      "type": "pressrelease",
+      "type_label": "Berita Resmi",
+      "title": "Inflasi year-on-year (y-on-y) pada Oktober 2026 sebesar 3,23 persen.",
+      "region": "Indonesia",
+      "date": "2026-11-02",
+      "years": null,
+      "table_code": null,
+      "url": "https://www.bps.go.id/id/pressrelease/2026/11/02/170347",
+      "url_built": true,
+      "latest_year": 2026
+    },
+    {
+      "doc_id": "pressrelease:0000:168714",
+      "type": "pressrelease",
+      "type_label": "Berita Resmi",
+      "title": "Pada Oktober 2026, perubahan Indeks Harga Perdagangan Besar (IHPB) Umum Nasional tahun ke tahun sebesar 7,00 persen.",
+      "region": "Indonesia",
+      "date": "2026-11-02",
+      "years": null,
+      "table_code": null,
+      "url": "https://www.bps.go.id/id/pressrelease/2026/11/02/168714",
+      "url_built": true,
+      "latest_year": 2026
+    },
+    {
+      "doc_id": "pressrelease:0000:171130",
+      "type": "pressrelease",
+      "type_label": "Berita Resmi",
+      "title": "Nilai Tukar Petani (NTP) Oktober 2026 sebesar 132,60 atau naik 1,13 persen.",
+      "region": "Indonesia",
+      "date": "2026-11-02",
+      "years": null,
+      "table_code": null,
+      "url": "https://www.bps.go.id/id/pressrelease/2026/11/02/171130",
+      "url_built": true,
+      "latest_year": 2026
+    },
+    {
+      "doc_id": "statictable:0000:2083",
+      "type": "statictable",
+      "type_label": "Tabel arsip",
+      "title": "Inflasi Indonesia Menurut Kelompok Pengeluaran, 2020-2023",
+      "region": "Indonesia",
+      "date": "2024-02-02 10:20:00",
+      "years": null,
+      "table_code": null,
+      "url": "https://www.bps.go.id/id/statistics-table/1/MjA4MyMx/inflasi-indonesia-menurut-kelompok-pengeluaran-2020-2023.html",
+      "url_built": false,
+      "latest_year": 2023
+    },
+    {
+      "doc_id": "pressrelease:0000:170207",
+      "type": "pressrelease",
+      "type_label": "Berita Resmi",
+      "title": "Inflasi year-on-year (y-on-y) pada Juni 2026 sebesar 3,34 persen.",
+      "region": "Indonesia",
+      "date": "2026-07-01",
+      "years": null,
+      "table_code": null,
+      "url": "https://www.bps.go.id/id/pressrelease/2026/07/01/170207",
+      "url_built": true,
+      "latest_year": 2026
+    }
+  ]
+}

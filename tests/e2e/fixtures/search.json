@@ -1,0 +1,102 @@
+{
+  "question": "jumlah penduduk miskin kabupaten garut",
+  "rewrite": {
+    "query": "jumlah penduduk miskin menurut Kabupaten/Kota",
+    "region": "Kabupaten Garut"
+  },
+  "regions": [
+    {
+      "id": "3205",
+      "name": "Kabupaten Garut"
+    }
+  ],
+  "results": [
+    {
+      "doc_id": "statictable:3200:121",
+      "type": "statictable",
+      "type_label": "Tabel arsip",
+      "title": "Jumlah Penduduk Miskin Menurut Kabupaten/Kota di Jawa Barat (Ribu Orang), 2002-2016",
+      "region": "Jawa Barat",
+      "date": "2018-04-27 00:00:00",
+      "years": null,
+      "table_code": null,
+      "url": "https://jabar.bps.go.id/id/statistics-table/1/MTIxIzE=/jumlah-penduduk-miskin-menurut-kabupaten-kota-di-jawa-barat-ribu-orang-2002-2016.html",
+      "url_built": false,
+      "latest_year": 2016
+    },
+    {
+      "doc_id": "simdasi:3200:REdXbUdSVjIzUlJTT0Z5Vy9Rd3ZmQT09",
+      "type": "simdasi",
+      "type_label": "Daerah Dalam Angka",
+      "title": "Jumlah dan Persentase Penduduk Miskin Menurut Kabupaten/Kota di Provinsi Jawa Barat",
+      "region": "Jawa Barat",
+      "date": "2026-02-05 11:22:59",
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "table_code": "4.6.2",
+      "url": "https://jabar.bps.go.id/id/statistics-table/3/UkVkWGJVZFNWakl6VWxKVFQwWjVWeTlSZDNabVFUMDkjMyMzMjAw/jumlah-dan-persentase-penduduk-miskin-menurut-kabupaten-kota-di-provinsi-jawa-barat.html",
+      "url_built": false,
+      "latest_year": 2025
+    },
+    {
+      "doc_id": "var:3200:83",
+      "type": "var",
+      "type_label": "Tabel angka",
+      "title": "Jumlah Penduduk Miskin Menurut Kabupaten/Kota (Ribu Jiwa)",
+      "region": "Jawa Barat",
+      "date": "2026-10-19 11:10:57",
+      "years": null,
+      "table_code": null,
+      "url": "https://jabar.bps.go.id/id/statistics-table/2/ODMjMg==/jumlah-penduduk-miskin-menurut-kabupaten-kota-ribu-jiwa.html",
+      "url_built": false,
+      "latest_year": null
+    },
+    {
+      "doc_id": "simdasi:3200:dmhsbUpvaVJRT1lrd1M5S1ljOXp0UT09",
+      "type": "simdasi",
+      "type_label": "Daerah Dalam Angka",
+      "title": "Garis Kemiskinan, Jumlah, dan Persentase Penduduk Miskin di Provinsi Jawa Barat",
+      "region": "Jawa Barat",
+      "date": "2026-02-05 11:20:14",
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "table_code": "4.6.1",
+      "url": "https://jabar.bps.go.id/id/statistics-table/3/ZG1oc2JVcHZhVkpSVDFscmQxTTVTMWxqT1hwMFVUMDkjMyMzMjAw/garis-kemiskinan-jumlah-dan-persentase-penduduk-miskin-di-provinsi-jawa-barat.html",
+      "url_built": false,
+      "latest_year": 2025
+    },
+    {
+      "doc_id": "statictable:3200:122",
+      "type": "statictable",
+      "type_label": "Tabel arsip",
+      "title": "Persentase Penduduk Miskin Menurut Kabupaten/Kota di Jawa Barat (Persen), 2002-2016",
+      "region": "Jawa Barat",
+      "date": "2018-04-27 00:00:00",
+      "years": null,
+      "table_code": null,
+      "url": "https://jabar.bps.go.id/id/statistics-table/1/MTIyIzE=/persentase-penduduk-miskin-menurut-kabupaten-kota-di-jawa-barat-persen-2002-2016.html",
+      "url_built": false,
+      "latest_year": 2016
+    }
+  ]
+}
