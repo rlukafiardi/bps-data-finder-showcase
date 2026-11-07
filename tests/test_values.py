@@ -31,6 +31,30 @@ def test_static_table_title_header_data_and_footnote(monkeypatch):
     assert t["note"] == "Sumber: BPS, Susenas, dengan catatan yang cukup panjang"
 
 
+BANNER_TABLE = """<table>
+<tr><td>Tabel</td><td colspan=3>Data Kasus Ilegal Per Bulan Tahun 2015</td></tr>
+<tr><td>Table</td><td colspan=3>Cases of Illegal Logging and Mining Per Month in 2015</td></tr>
+<tr><td>Bulan/ Month</td><td colspan=3>Jenis Kejahatan/ Type of Illegal Case</td></tr>
+<tr><td>Bulan/ Month</td><td>Kehutanan/ Logging</td><td>Pertambangan/ Mining</td><td>Perikanan/ Fishing</td></tr>
+<tr><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td></tr>
+<tr><td>Paser</td><td>5</td><td>-</td><td>-</td></tr>
+<tr><td colspan=4>Source: Police Office of Kalimantan Timur</td></tr>
+</table>"""
+
+
+def test_static_table_banner_rows_above_the_header_are_dropped(monkeypatch):
+    payload = {"data": {"table": BANNER_TABLE, "title": "Data Kasus Ilegal", "updt_date": "2017-05-04"}}
+    monkeypatch.setattr(tables, "get", lambda path, params=None: (payload, 0.0))
+    t = tables.static_table("6400", "319")
+    assert t["columns"] == ["Kehutanan/ Logging", "Pertambangan/ Mining", "Perikanan/ Fishing"]
+    assert [(r["label"], r["values"]) for r in t["rows"]] == [("Paser", ["5", "-", "-"])]
+    assert t["note"] == "Source: Police Office of Kalimantan Timur"
+
+
+def test_a_two_column_header_is_not_a_banner():
+    assert not tables.is_banner(["Wilayah", "Jumlah penduduk miskin menurut kabupaten"])  # one value column: this is the header
+
+
 def test_mark_regions_matches_numbered_and_bare_names():
     t = {"rows": [{"label": "1. Bogor"}, {"label": "23. Kota Bandung"}, {"label": "Provinsi Jawa Barat"}, {"label": "Bandung"}]}
     marked = tables.mark_regions(t, ["3201", "3273", "3200"])  # Kabupaten Bogor, Kota Bandung, Jawa Barat

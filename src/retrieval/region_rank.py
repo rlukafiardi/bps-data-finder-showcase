@@ -14,6 +14,15 @@ from src.retrieval.regions import domains, find_regions, strip_regions
 
 CANDIDATES = 300
 WEIGHTS = {"own": 1.0, "province": 0.85, "national": 0.7}
+# the API shows only results scoring at least this share of the best one. On the 88 golden questions it keeps Recall@5 at 0.977
+# and cuts the average from 5.0 to 4.4 results; a question with one close match ("tambang ilegal kalimantan timur") shows 2
+MIN_SCORE_SHARE = 0.7
+
+
+def close_matches(hits):
+    """Hits scoring at least MIN_SCORE_SHARE of the best one (the best always stays). Scores are rank-based, so a weak list
+    has a clear drop after its real matches; this cuts after it."""
+    return hits[hits["score"] >= hits["score"].max() * MIN_SCORE_SHARE]
 
 
 def allowed_domains(region_ids):

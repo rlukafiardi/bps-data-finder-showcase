@@ -112,6 +112,20 @@ function renderResults(data) {
     setStatus($("status"), "Belum ketemu. Coba kata yang lebih sederhana, misalnya nama datanya dan daerahnya.");
     return;
   }
+  if (data.no_match) {
+    // the best result has almost none of the question's words: say so, and keep the nearest tables one tap away
+    setStatus($("status"), "Sepertinya BPS belum punya data yang pas untuk ini. Coba kata lain, misalnya nama datanya dan daerahnya.");
+    const show = el("button", "", "Lihat hasil terdekat");
+    show.type = "button";
+    show.addEventListener("click", () => {
+      setStatus($("status"), `${data.results.length} hasil terdekat, mungkin kurang cocok`);
+      $("results").replaceChildren(...data.results.map(resultCard));
+    });
+    const item = el("li", "no-match");
+    item.append(show);
+    $("results").replaceChildren(item);
+    return;
+  }
   setStatus($("status"), `${data.results.length} hasil paling cocok`);
   $("regions").textContent = data.regions.length
     ? "Daerah yang dikenali: " + data.regions.map((r) => r.name).join(", ")

@@ -1,6 +1,8 @@
 """BM25 over the catalog: title, region name, body, notes and table code as one text per row."""
 
+import hashlib
 import re
+from pathlib import Path
 
 import bm25s
 import numpy as np
@@ -27,11 +29,27 @@ def bm25_text(row):
     return " ".join([doc_text(row)] + [row["title"]] * (TITLE_WEIGHT - 1))
 
 
+def fingerprint(catalog):
+    """Changes when a row, its text or the row order changes: a saved index is only valid for the catalog it was built from."""
+    texts = (bm25_text(r) for r in catalog.to_dict("records"))
+    return hashlib.sha256("\n".join(f"{d}\t{t}" for d, t in zip(catalog["doc_id"], texts)).encode()).hexdigest()
+
+
 class BM25:
-    def __init__(self, catalog):
+    """`saved`: a folder written by save(), which skips tokenizing and indexing 75k rows at every start."""
+
+    def __init__(self, catalog, saved=None):
         self.catalog = catalog.reset_index(drop=True)
-        self.model = bm25s.BM25()
-        self.model.index([tokenize(bm25_text(r)) for r in self.catalog.to_dict("records")], show_progress=False)
+        if saved:
+            assert (Path(saved) / "fingerprint.txt").read_text() == fingerprint(self.catalog), f"{saved} was built from another catalog: rebuild it"
+            self.model = bm25s.BM25.load(saved, mmap=True, show_progress=False)
+        else:
+            self.model = bm25s.BM25()
+            self.model.index([tokenize(bm25_text(r)) for r in self.catalog.to_dict("records")], show_progress=False)
+
+    def save(self, folder):
+        self.model.save(folder, show_progress=False)
+        (Path(folder) / "fingerprint.txt").write_text(fingerprint(self.catalog))
 
     def search(self, question, k=5, domains=None):
         """Top-k catalog rows with a `score` column; `domains` limits scoring to those domain ids."""

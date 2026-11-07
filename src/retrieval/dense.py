@@ -11,18 +11,29 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 
 from src.config import EMBED_MODEL
-from src.retrieval.bm25 import doc_text
+from src.retrieval.bm25 import doc_text, fingerprint
 
 CACHE = Path("data/processed") / f"embeddings_{EMBED_MODEL.replace('/', '__')}.parquet"
 RRF_K = 60
 
 
 class Dense:
-    def __init__(self, catalog):
+    """`saved`: a folder written by save(); it skips reading the 126 MB embedding cache and matching 75k rows against it at every start."""
+
+    def __init__(self, catalog, saved=None):
         self.catalog = catalog.reset_index(drop=True)
         self.model = SentenceTransformer(EMBED_MODEL)
-        texts = [doc_text(r) for r in self.catalog.to_dict("records")]
-        self.vectors = self._embed_cached(self.catalog["doc_id"].tolist(), texts)
+        if saved:
+            assert (Path(saved) / "fingerprint.txt").read_text() == fingerprint(self.catalog), f"{saved} was built from another catalog: rebuild it"
+            self.vectors = np.load(Path(saved) / "vectors.npy", mmap_mode="r")
+        else:
+            texts = [doc_text(r) for r in self.catalog.to_dict("records")]
+            self.vectors = self._embed_cached(self.catalog["doc_id"].tolist(), texts)
+
+    def save(self, folder):
+        Path(folder).mkdir(parents=True, exist_ok=True)
+        np.save(Path(folder) / "vectors.npy", self.vectors)
+        (Path(folder) / "fingerprint.txt").write_text(fingerprint(self.catalog))
 
     def _embed_cached(self, doc_ids, texts):
         cached = pd.read_parquet(CACHE) if CACHE.exists() else pd.DataFrame(columns=["doc_id", "text", "vector"])

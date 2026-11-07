@@ -118,6 +118,13 @@ def is_note(row):
     return len(texts) == 1 and len(next(iter(texts))) > 20
 
 
+def is_banner(row):
+    """A header line spread over several columns: a label, then one long text repeated ("Tabel | Judul | Judul | Judul").
+    Above the header these carry the title (also in English) and the column group, which the title already says."""
+    rest = {c for c in row[1:] if c}
+    return len(rest) == 1 and len(next(iter(rest))) > 20 and sum(1 for c in row[1:] if c) >= 2
+
+
 def is_numbering(row):
     """BPS's column-number row: [1] [2] [3] ..., no data."""
     cells = [c for c in row if c]
@@ -125,12 +132,13 @@ def is_numbering(row):
 
 
 def static_table(domain, table_id):
-    """Static tables are Excel exports: a title row, a header row, the data, then footnotes. Rows above the
-    header are dropped, footnotes become the note, the [1] [2] numbering row is dropped, and the first other
-    row is the header. Tables with a two-level header show their second header row as a first data row."""
+    """Static tables are Excel exports: title rows, a header row, the data, then footnotes. Rows above the
+    header (titles, banners spanning the columns) are dropped, footnotes become the note, the [1] [2] numbering
+    row is dropped, and the first other row is the header. Tables with a two-level header show their second header
+    row as a first data row."""
     d, fetched_at = get(f"/api/view/domain/{domain}/model/statictable/lang/ind/id/{table_id}/key/{{key}}")
     grid = [row for row in html_grid(d["data"]["table"]) if any(row)]
-    start = next((i for i, row in enumerate(grid) if not is_note(row)), len(grid))
+    start = next((i for i, row in enumerate(grid) if not is_note(row) and not is_banner(row)), len(grid))
     notes = [next(c for c in row if c) for row in grid[start:] if is_note(row)]
     grid = [row for row in grid[start:] if not is_note(row) and not is_numbering(row)]
     if len(grid) < 2:

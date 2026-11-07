@@ -382,6 +382,12 @@ if (LIVE) {
     await search(page, "kosong");
     await page.waitForFunction(() => /Belum ketemu/.test(document.getElementById("status").textContent));
     assert.equal((await page.$$("#results .result")).length, 0);
+    await search(page, "nihil");
+    await page.waitForFunction(() => /belum punya data yang pas/.test(document.getElementById("status").textContent));
+    assert.equal((await page.$$("#results .result")).length, 0, "no cards until asked");
+    await page.click("#results button");
+    await page.waitForFunction(() => document.querySelectorAll("#results .result").length > 0);
+    assert.match(await text(page, "#status"), /hasil terdekat, mungkin kurang cocok/);
     await search(page, "limit");
     await page.waitForFunction(() => /Terlalu banyak pencarian/.test(document.getElementById("status").textContent));
     assert.ok(await page.$eval("#status", (n) => n.classList.contains("error")));

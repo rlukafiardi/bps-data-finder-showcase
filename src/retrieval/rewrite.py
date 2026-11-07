@@ -25,6 +25,9 @@ SERVING_TIMEOUT_MS = 10000  # Gemini rejects deadlines under 10 s
 # after a failure the API skips Gemini for a while: on 2026-11-04 the free tier answered 503/504 for most calls on every
 # Flash model, and each failed attempt added up to 10 s to a visitor's search
 COOLDOWN_S = 120
+# a 503 is often over in seconds (2026-11-05: about half of the calls failed at once, the next one worked), so a server
+# error is retried once and then skips Gemini for a short time; a 429 or a timeout keeps the long cooldown
+SERVER_ERROR_COOLDOWN_S = 30
 
 PROMPT = """You rewrite questions about Indonesian official statistics (BPS) into a search query that matches
 how BPS titles its tables, publications and press releases.
@@ -64,7 +67,7 @@ class RewriteUnavailable(Exception):
 
 class Rewriter:
     """serving=True (the API): never wait. A call inside the spacing window or the cooldown after a failure
-    raises RewriteUnavailable at once; a 429, a server error or a timeout raises it and starts the cooldown.
+    raises RewriteUnavailable at once; a 429, a server error or a timeout raises it and starts the cooldown (a server error is retried once first).
     The cache stays in memory (the data folder is read-only there). serving=False (the eval): wait out
     limits and append to the cache file."""
 
@@ -114,16 +117,23 @@ class Rewriter:
             if now < self.last_call + REWRITE_SPACING_S or now < self.down_until:
                 raise RewriteUnavailable("inside the spacing window or the cooldown")
             self.last_call = now
-        try:
-            response = self.client.models.generate_content(model=self.model, contents=question, config=self._config())
-        except errors.ClientError as e:
-            if e.code != 429:
-                raise
-            self.down_until = time.monotonic() + COOLDOWN_S
-            raise RewriteUnavailable("rate limited") from e
-        except (errors.ServerError, httpx2.TimeoutException) as e:
-            self.down_until = time.monotonic() + COOLDOWN_S
-            raise RewriteUnavailable(type(e).__name__) from e
+        for attempt in range(2):
+            try:
+                response = self.client.models.generate_content(model=self.model, contents=question, config=self._config())
+                break
+            except errors.ClientError as e:
+                if e.code != 429:
+                    raise
+                self.down_until = time.monotonic() + COOLDOWN_S
+                raise RewriteUnavailable("rate limited") from e
+            except errors.ServerError as e:
+                if attempt == 0:
+                    continue
+                self.down_until = time.monotonic() + SERVER_ERROR_COOLDOWN_S
+                raise RewriteUnavailable("ServerError") from e
+            except httpx2.TimeoutException as e:
+                self.down_until = time.monotonic() + COOLDOWN_S
+                raise RewriteUnavailable("TimeoutException") from e
         return json.loads(response.text)
 
     def _call(self, question):

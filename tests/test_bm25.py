@@ -1,4 +1,5 @@
 import pandas as pd
+import pytest
 
 from src.retrieval import bm25
 
@@ -26,3 +27,14 @@ def test_long_summary_buries_the_title_without_weighting(monkeypatch):
 
 def test_shipped_title_weight_brings_back_the_exact_match():
     assert first_hit() == "a"
+
+
+def test_a_saved_index_answers_like_a_built_one_and_refuses_another_catalog(tmp_path):
+    built = bm25.BM25(catalog())
+    built.save(tmp_path)
+    loaded = bm25.BM25(catalog(), saved=tmp_path)
+    question = "berita resmi statistik januari 2025"
+    assert loaded.search(question, k=3)["doc_id"].tolist() == built.search(question, k=3)["doc_id"].tolist()
+    changed = catalog().assign(title=lambda d: d["title"].str.replace("Juli", "Agustus"))
+    with pytest.raises(AssertionError, match="another catalog"):
+        bm25.BM25(changed, saved=tmp_path)
