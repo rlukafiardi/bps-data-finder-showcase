@@ -7,7 +7,10 @@ def row(title):
 
 def test_a_top_result_without_the_topic_words_is_no_match():
     assert no_match("harga bitcoin harga bitcoin", row("Indeks Harga Perdagangan Besar (IHPB) Seksi Bijih Besi"))
-    assert no_match("jumlah pondok pesantren banten jumlah pondok pesantren menurut Kabupaten/Kota", row("Jumlah Puskesmas Menurut Kabupaten/Kota di Provinsi Banten"))
+    assert no_match(
+        "jumlah pondok pesantren banten jumlah pondok pesantren menurut Kabupaten/Kota",
+        row("Jumlah Puskesmas Menurut Kabupaten/Kota di Provinsi Banten"),
+    )
 
 
 def test_a_top_result_with_the_topic_words_is_a_match():
@@ -16,7 +19,9 @@ def test_a_top_result_with_the_topic_words_is_a_match():
 
 
 def test_generic_and_region_words_do_not_count_as_topic():
-    assert coverage("jumlah menurut provinsi di jawa barat", row("Apa saja")) is None  # nothing but generic and region words: no verdict
+    assert (
+        coverage("jumlah menurut provinsi di jawa barat", row("Apa saja")) is None
+    )  # nothing but generic and region words: no verdict
     assert not no_match("jumlah menurut provinsi", row("Apa saja"))
 
 

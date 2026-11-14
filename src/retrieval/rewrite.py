@@ -97,7 +97,9 @@ class Rewriter:
             self.cache[key] = result
             if not self.serving:
                 with CACHE.open("a") as f:
-                    f.write(json.dumps({"key": key, "model": self.model, "question": question, "result": result}) + "\n")
+                    f.write(
+                        json.dumps({"key": key, "model": self.model, "question": question, "result": result}) + "\n"
+                    )
         return self.cache[key]
 
     def rewrite_or_none(self, question):
@@ -119,7 +121,9 @@ class Rewriter:
             self.last_call = now
         for attempt in range(2):
             try:
-                response = self.client.models.generate_content(model=self.model, contents=question, config=self._config())
+                response = self.client.models.generate_content(
+                    model=self.model, contents=question, config=self._config()
+                )
                 break
             except errors.ClientError as e:
                 if e.code != 429:

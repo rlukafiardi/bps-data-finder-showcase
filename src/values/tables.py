@@ -41,7 +41,10 @@ def var_table(domain, var_id, period=None):
         {
             "label": vv["label"],
             # key = vervar + var + turvar + tahun + turtahun, each as its API id
-            "values": [d["datacontent"].get(f"{vv['val']}{var['val']}{tv['val']}{year['val']}{tt['val']}") for tv, tt in columns],
+            "values": [
+                d["datacontent"].get(f"{vv['val']}{var['val']}{tv['val']}{year['val']}{tt['val']}")
+                for tv, tt in columns
+            ],
         }
         for vv in d["vervar"]
     ]
@@ -52,7 +55,10 @@ def var_table(domain, var_id, period=None):
         "period": chosen["th"],
         "periods": [{"id": str(p["th_id"]), "label": p["th"]} for p in periods[:PERIODS_SHOWN]],
         "columns": [column_label(tv, tt, chosen["th"]) for tv, tt in (columns[i] for i in keep)],
-        "rows": [{"label": r["label"], "values": [None if r["values"][i] is None else str(r["values"][i]) for i in keep]} for r in rows],
+        "rows": [
+            {"label": r["label"], "values": [None if r["values"][i] is None else str(r["values"][i]) for i in keep]}
+            for r in rows
+        ],
         "note": clean(var.get("note")) or None,
         "source": None,
         "updated": d.get("last_update"),
@@ -77,7 +83,10 @@ def simdasi_table(domain, table_id, years, period=None):
         "period": str(year),
         "periods": [{"id": str(y), "label": str(y)} for y in sorted(years, reverse=True)[:PERIODS_SHOWN]],
         "columns": list(names.values()),
-        "rows": [{"label": clean(r["label"]), "values": [r["variables"].get(k, {}).get("value") for k in names]} for r in d["data"]],  # a row only lists the columns it has a value for
+        "rows": [
+            {"label": clean(r["label"]), "values": [r["variables"].get(k, {}).get("value") for k in names]}
+            for r in d["data"]
+        ],  # a row only lists the columns it has a value for
         "note": clean(d.get("catatan")) or None,
         "source": clean(d.get("sumber")) or None,
         "updated": d.get("table_created"),

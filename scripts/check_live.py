@@ -28,22 +28,36 @@ def api_checks(api, site):
     check("health", r.status_code == 200 and r.json() == {"ok": True}, f"{r.status_code} {r.text[:80]}")
     check("search refuses one letter", c.get("/api/search", params={"q": "a"}).status_code == 422)
     check("search refuses 201 characters", c.get("/api/search", params={"q": "a" * 201}).status_code == 422)
-    check("feedback refuses a NaN body", c.post("/api/feedback", content="NaN", headers={"Content-Type": "application/json"}).status_code == 422)
+    check(
+        "feedback refuses a NaN body",
+        c.post("/api/feedback", content="NaN", headers={"Content-Type": "application/json"}).status_code == 422,
+    )
     check("value refuses an unknown table", c.get("/api/value", params={"doc_id": "var:0000:nope"}).status_code == 404)
     r = c.get("/api/search", params={"q": "jumlah penduduk miskin kabupaten garut"})
-    check("search answers with results", r.status_code == 200 and len(r.json()["results"]) == 5, f"{r.status_code} {r.text[:80]}")
+    check(
+        "search answers with results",
+        r.status_code == 200 and len(r.json()["results"]) == 5,
+        f"{r.status_code} {r.text[:80]}",
+    )
     if site:
         allowed = c.options("/api/search", headers={"Origin": site, "Access-Control-Request-Method": "GET"})
-        check("CORS allows the site", allowed.headers.get("access-control-allow-origin") == site, str(allowed.headers.get("access-control-allow-origin")))
+        check(
+            "CORS allows the site",
+            allowed.headers.get("access-control-allow-origin") == site,
+            str(allowed.headers.get("access-control-allow-origin")),
+        )
     other = c.options("/api/search", headers={"Origin": "https://example.com", "Access-Control-Request-Method": "GET"})
     check("CORS refuses another origin", "access-control-allow-origin" not in other.headers)
     link_checks(c)
-    codes = [c.get("/api/search", params={"q": "inflasi riau"}, headers={"X-Forwarded-For": f"203.0.113.{i}"}).status_code for i in range(25)]
+    codes = [
+        c.get("/api/search", params={"q": "inflasi riau"}, headers={"X-Forwarded-For": f"203.0.113.{i}"}).status_code
+        for i in range(25)
+    ]
     check("a forged X-Forwarded-For does not lift the per-client limit", 429 in codes, f"codes {sorted(set(codes))}")
 
 
 def link_checks(c):
-    """"Buka di BPS" of press releases and publications opens the page of that title. Table pages fill in with
+    """ "Buka di BPS" of press releases and publications opens the page of that title. Table pages fill in with
     JavaScript after loading, so a plain request cannot tell whether they work: those need a browser."""
     found = []
     for q in ("perkembangan pariwisata bali", "publikasi statistik indonesia 2026"):
@@ -55,7 +69,11 @@ def link_checks(c):
         time.sleep(3)  # bps.go.id answers 429 to fast visitors
         r = bps.get(item["url"])
         title = html.unescape((re.search(r"<title>([^<]*)</title>", r.text) or [None, ""])[1])
-        check(f"{item['type']} link opens its page", r.status_code == 200 and item["title"][:40].lower() in title.lower(), f"{r.status_code} {item['url']}")
+        check(
+            f"{item['type']} link opens its page",
+            r.status_code == 200 and item["title"][:40].lower() in title.lower(),
+            f"{r.status_code} {item['url']}",
+        )
 
 
 def site_checks(site, api):

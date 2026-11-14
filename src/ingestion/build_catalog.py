@@ -156,7 +156,10 @@ def main():
     df["text_parts"] = df["text_parts"].map(lambda parts: " | ".join(p for p in map(clean, parts) if p))
     df = df.rename(columns={"text_parts": "body"})
     notes = var_notes()
-    df["notes"] = [notes.get((d, i), "") if t == "var" else "" for t, d, i in zip(df["type"], df["domain"], df["source_id"])]
+    df["notes"] = [
+        notes.get((d, i), "") if t == "var" else ""
+        for t, d, i in zip(df["type"], df["domain"], df["source_id"], strict=True)
+    ]
     df["doc_id"] = df["type"] + ":" + df["domain"] + ":" + df["source_id"]
 
     bad = (df["source_id"] == "") | (df["title"] == "")
@@ -164,7 +167,9 @@ def main():
     out = df[~bad].groupby("doc_id", as_index=False).first()  # simdasi: list row + search row with its url
     site = sites()
     out["url_built"] = out["url"].isna()
-    out.loc[out["url_built"], "url"] = [built_link(r, site[r["domain"]]) for r in out[out["url_built"]].to_dict("records")]
+    out.loc[out["url_built"], "url"] = [
+        built_link(r, site[r["domain"]]) for r in out[out["url_built"]].to_dict("records")
+    ]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     out.to_parquet(OUT, index=False)
 

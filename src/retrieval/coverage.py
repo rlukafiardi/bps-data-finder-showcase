@@ -6,7 +6,9 @@ from src.retrieval.bm25 import bm25_text, tokenize
 from src.retrieval.regions import domains, find_regions, strip_regions
 
 # words that name the kind of table, not the topic, or fill the question
-GENERIC = set("jumlah menurut kabupaten kota provinsi persentase data tahun per banyaknya rata indonesia statistik di dan yang untuk ke dari pada apa siapa berapa hari ini harga".split())
+GENERIC = set(
+    "jumlah menurut kabupaten kota provinsi persentase data tahun per banyaknya rata indonesia statistik di dan yang untuk ke dari pada apa siapa berapa hari ini harga".split()
+)
 # on the 88 golden questions the right top result has at least 0.4 (median 0.83); the wrong top results of unanswerable
 # questions have 0.0-0.2
 MIN_COVERAGE = 0.3

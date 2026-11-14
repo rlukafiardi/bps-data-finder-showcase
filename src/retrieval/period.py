@@ -8,17 +8,52 @@ or "2018=100", census names such as "SP2020") are ignored.
 import re
 
 MONTHS = {
-    "januari": 1, "january": 1, "jan": 1, "februari": 2, "february": 2, "feb": 2, "maret": 3, "march": 3, "mar": 3,
-    "april": 4, "apr": 4, "mei": 5, "may": 5, "juni": 6, "june": 6, "jun": 6, "juli": 7, "july": 7, "jul": 7,
-    "agustus": 8, "august": 8, "agu": 8, "agt": 8, "aug": 8, "september": 9, "sep": 9, "sept": 9,
-    "oktober": 10, "october": 10, "okt": 10, "oct": 10, "november": 11, "nov": 11, "desember": 12, "december": 12,
-    "des": 12, "dec": 12,
+    "januari": 1,
+    "january": 1,
+    "jan": 1,
+    "februari": 2,
+    "february": 2,
+    "feb": 2,
+    "maret": 3,
+    "march": 3,
+    "mar": 3,
+    "april": 4,
+    "apr": 4,
+    "mei": 5,
+    "may": 5,
+    "juni": 6,
+    "june": 6,
+    "jun": 6,
+    "juli": 7,
+    "july": 7,
+    "jul": 7,
+    "agustus": 8,
+    "august": 8,
+    "agu": 8,
+    "agt": 8,
+    "aug": 8,
+    "september": 9,
+    "sep": 9,
+    "sept": 9,
+    "oktober": 10,
+    "october": 10,
+    "okt": 10,
+    "oct": 10,
+    "november": 11,
+    "nov": 11,
+    "desember": 12,
+    "december": 12,
+    "des": 12,
+    "dec": 12,
 }
 ROMAN = {"i": 1, "ii": 2, "iii": 3, "iv": 4}
 BOOST = {"months": (1.3, 0.7), "quarters": (1.3, 0.7), "years": (1.15, 0.75)}  # (agrees, differs)
 
 MONTH = "|".join(sorted(MONTHS, key=len, reverse=True))
-NOT_A_PERIOD = re.compile(r"\b(?:tahun dasar|seri|konstan|base year)\s*[\[(]?\d{4}|\b\d{4}\s*=\s*100|\b(?:sp|supas)\s?\d{4}|\bsensus penduduk\s*\d{4}", re.I)
+NOT_A_PERIOD = re.compile(
+    r"\b(?:tahun dasar|seri|konstan|base year)\s*[\[(]?\d{4}|\b\d{4}\s*=\s*100|\b(?:sp|supas)\s?\d{4}|\bsensus penduduk\s*\d{4}",
+    re.I,
+)
 # lookarounds instead of \b: BPS titles sometimes glue them ("Desember2024")
 WORD = rf"(?<![a-z])({MONTH})(?![a-z])"
 MONTH_RANGE = re.compile(rf"{WORD}\s*[-–—/]\s*{WORD}", re.I)

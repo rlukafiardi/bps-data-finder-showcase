@@ -1,6 +1,6 @@
 """Build docs/eval-report.html from the last eval run (data/processed/eval_results.parquet) and evals/history.csv.
 
-    uv run python -m evals.run_eval && uv run python -m evals.report
+uv run python -m evals.run_eval && uv run python -m evals.report
 """
 
 import html
@@ -17,7 +17,11 @@ STEPS = [  # (what was added, method with it, method without it)
     ("Region ranking on BM25", "bm25+region", "bm25"),
     ("Hybrid (BM25 + embeddings) instead of BM25 alone", "hybrid+region", "bm25+region"),
     ("Gemini query rewrite on top of hybrid", PRODUCTION, "hybrid+region"),
-    ("Embeddings added to the rewrite + BM25 pipeline (what the model files cost us)", PRODUCTION, "rewrite+bm25+region"),
+    (
+        "Embeddings added to the rewrite + BM25 pipeline (what the model files cost us)",
+        PRODUCTION,
+        "rewrite+bm25+region",
+    ),
 ]
 LIMITS = [
     "All 88 questions were written by Claude (30 from a need, 40 seeded from random catalog items, 13 with a period, 5 for the "
@@ -74,7 +78,10 @@ def dot_chart(rows):
     left, right, top, step, width = 190, 60, 24, 30, 720
     plot = width - left - right
     height = top + step * len(rows) + 30
-    x = lambda v: left + v * plot
+
+    def x(v):
+        return left + v * plot
+
     parts = [f'<svg viewBox="0 0 {width} {height}" role="img" aria-label="Recall@5 per method with 95% intervals">']
     for tick in (0, 0.25, 0.5, 0.75, 1):
         parts.append(f'<line class="grid" x1="{x(tick)}" x2="{x(tick)}" y1="{top - 8}" y2="{height - 26}"/>')
@@ -82,8 +89,10 @@ def dot_chart(rows):
     for i, (method, recall, lo, hi) in enumerate(rows):
         y = top + step * i + step / 2
         parts.append(f'<text class="name" x="{left - 10}" y="{y + 4}" text-anchor="end">{esc(method)}</text>')
-        parts.append(f'<g><title>{esc(method)}: Recall@5 {pct(recall)} (95% interval {pct(lo)} to {pct(hi)})</title>'
-                     f'<line class="bar" x1="{x(lo)}" x2="{x(hi)}" y1="{y}" y2="{y}"/><circle class="dot" cx="{x(recall)}" cy="{y}" r="6"/></g>')
+        parts.append(
+            f"<g><title>{esc(method)}: Recall@5 {pct(recall)} (95% interval {pct(lo)} to {pct(hi)})</title>"
+            f'<line class="bar" x1="{x(lo)}" x2="{x(hi)}" y1="{y}" y2="{y}"/><circle class="dot" cx="{x(recall)}" cy="{y}" r="6"/></g>'
+        )
         parts.append(f'<text x="{x(hi) + 8}" y="{y + 4}">{pct(recall)}</text>')
     parts.append("</svg>")
     return "".join(parts)
@@ -103,28 +112,64 @@ def build():
         lo, hi = interval(df["recall@5"])
         rows.append((method, df["recall@5"].mean(), lo, hi, df["mrr"].mean()))
     rows.sort(key=lambda r: -r[1])
-    methods = pd.DataFrame([{"Method": m, "Recall@5": pct(r), "95% interval": f"{pct(lo)} to {pct(hi)}", "MRR": pct(mrr)}
-                            for m, r, lo, hi, mrr in rows])
+    methods = pd.DataFrame(
+        [
+            {"Method": m, "Recall@5": pct(r), "95% interval": f"{pct(lo)} to {pct(hi)}", "MRR": pct(mrr)}
+            for m, r, lo, hi, mrr in rows
+        ]
+    )
 
     steps = []
     for label, with_, without in STEPS:
         delta, (lo, hi) = paired_difference(by_method[with_]["recall@5"], by_method[without]["recall@5"])
-        steps.append({"Step": label, "Change in Recall@5": f"{delta * 100:+.1f} points",
-                      "95% interval": f"{lo * 100:+.1f} to {hi * 100:+.1f}",
-                      "Read": "clearly better" if lo > 0 else "clearly worse" if hi < 0 else "within noise"})
+        steps.append(
+            {
+                "Step": label,
+                "Change in Recall@5": f"{delta * 100:+.1f} points",
+                "95% interval": f"{lo * 100:+.1f} to {hi * 100:+.1f}",
+                "Read": "clearly better" if lo > 0 else "clearly worse" if hi < 0 else "within noise",
+            }
+        )
 
     segments = []
     for column, label in (("source", "Question source"), ("type", "Target type")):
         g = prod.groupby(column).agg(n=("rank", "size"), hits=("recall@5", "sum"), mrr=("mrr", "mean")).reset_index()
-        segments.append(table(pd.DataFrame({label: g[column], "Questions": g["n"], "Hits in top 5": g["hits"].astype(int),
-                                            "Recall@5": (g["hits"] / g["n"]).map(pct), "MRR": g["mrr"].map(pct)}),
-                             numeric=("Questions", "Hits in top 5", "Recall@5", "MRR")))
-    misses = prod[~prod["recall@5"]][["question", "rank", "top1"]].rename(columns={"question": "Question", "rank": "Rank of the right source", "top1": "Top result"})
-    misses["Rank of the right source"] = misses["Rank of the right source"].map(lambda r: "not in top 10" if pd.isna(r) else int(r))
+        segments.append(
+            table(
+                pd.DataFrame(
+                    {
+                        label: g[column],
+                        "Questions": g["n"],
+                        "Hits in top 5": g["hits"].astype(int),
+                        "Recall@5": (g["hits"] / g["n"]).map(pct),
+                        "MRR": g["mrr"].map(pct),
+                    }
+                ),
+                numeric=("Questions", "Hits in top 5", "Recall@5", "MRR"),
+            )
+        )
+    misses = prod[~prod["recall@5"]][["question", "rank", "top1"]].rename(
+        columns={"question": "Question", "rank": "Rank of the right source", "top1": "Top result"}
+    )
+    misses["Rank of the right source"] = misses["Rank of the right source"].map(
+        lambda r: "not in top 10" if pd.isna(r) else int(r)
+    )
 
-    shown = history[history["method"].isin([PRODUCTION, "bps-search-keywords"])].rename(columns={
-        "date": "Date", "source": "Run", "catalog_rows": "Catalog rows", "n": "Questions", "method": "Method", "recall5": "Recall@5", "mrr": "MRR"})
-    shown["95% interval"] = [f"{float(lo):.3f} to {float(hi):.3f}" if lo else "not kept" for lo, hi in zip(history.loc[shown.index, "recall5_lo"], history.loc[shown.index, "recall5_hi"])]
+    shown = history[history["method"].isin([PRODUCTION, "bps-search-keywords"])].rename(
+        columns={
+            "date": "Date",
+            "source": "Run",
+            "catalog_rows": "Catalog rows",
+            "n": "Questions",
+            "method": "Method",
+            "recall5": "Recall@5",
+            "mrr": "MRR",
+        }
+    )
+    shown["95% interval"] = [
+        f"{float(lo):.3f} to {float(hi):.3f}" if lo else "not kept"
+        for lo, hi in zip(history.loc[shown.index, "recall5_lo"], history.loc[shown.index, "recall5_hi"], strict=True)
+    ]
     shown = shown[["Date", "Run", "Method", "Questions", "Catalog rows", "Recall@5", "95% interval", "MRR"]]
 
     best, lo, hi = prod["recall@5"].mean(), *interval(prod["recall@5"])
@@ -135,18 +180,48 @@ def build():
         (baseline["recall5"], f"Recall@5 of BPS's own site search (keywords, {baseline['n']} questions)"),
         (str(len(golden)), "questions, all written by Claude"),
     ]
-    body = "".join([
-        f'<h1>Retrieval evaluation</h1><p class="sub">Does the right BPS source appear in the top 5? Last run: {esc(history.iloc[-1]["date"])}, '
-        f'code {esc(history.iloc[-1]["source"])}, catalog {esc(history.iloc[-1]["catalog_rows"])} rows.</p>',
-        '<div class="tiles">' + "".join(f'<div class="tile"><div class="v">{esc(v)}</div><div class="l">{esc(label)}</div></div>' for v, label in tiles) + "</div>",
-        section("Methods compared", "Recall@5 with a 95% interval from resampling the questions. Overlapping intervals are not a difference.",
-                dot_chart([(m, r, lo, hi) for m, r, lo, hi, _ in rows]) + table(methods, numeric=("Recall@5", "MRR"))),
-        section("Did each step help?", "The same questions with and without the step, resampled together (paired).", table(pd.DataFrame(steps))),
-        section(f"Where {PRODUCTION} works and where it does not", "By question source and by the type of source the question points at. Small groups move by a whole question at a time.", "".join(segments)),
-        section("Questions it misses", f"{len(misses)} of {len(prod)} questions have no right source in the top 5.", table(misses) if len(misses) else ""),
-        section("History", "Every eval run, from the first BPS site-search baseline. Runs before 2026-11-04 were saved as text only, so they have no interval.", table(shown, numeric=("Questions", "Catalog rows", "Recall@5", "MRR"))),
-        section("Limits", "Read the numbers with these in mind.", "<ul>" + "".join(f"<li>{esc(item)}</li>" for item in LIMITS) + "</ul>"),
-    ])
+    body = "".join(
+        [
+            f'<h1>Retrieval evaluation</h1><p class="sub">Does the right BPS source appear in the top 5? Last run: {esc(history.iloc[-1]["date"])}, '
+            f"code {esc(history.iloc[-1]['source'])}, catalog {esc(history.iloc[-1]['catalog_rows'])} rows.</p>",
+            '<div class="tiles">'
+            + "".join(
+                f'<div class="tile"><div class="v">{esc(v)}</div><div class="l">{esc(label)}</div></div>'
+                for v, label in tiles
+            )
+            + "</div>",
+            section(
+                "Methods compared",
+                "Recall@5 with a 95% interval from resampling the questions. Overlapping intervals are not a difference.",
+                dot_chart([(m, r, lo, hi) for m, r, lo, hi, _ in rows]) + table(methods, numeric=("Recall@5", "MRR")),
+            ),
+            section(
+                "Did each step help?",
+                "The same questions with and without the step, resampled together (paired).",
+                table(pd.DataFrame(steps)),
+            ),
+            section(
+                f"Where {PRODUCTION} works and where it does not",
+                "By question source and by the type of source the question points at. Small groups move by a whole question at a time.",
+                "".join(segments),
+            ),
+            section(
+                "Questions it misses",
+                f"{len(misses)} of {len(prod)} questions have no right source in the top 5.",
+                table(misses) if len(misses) else "",
+            ),
+            section(
+                "History",
+                "Every eval run, from the first BPS site-search baseline. Runs before 2026-11-04 were saved as text only, so they have no interval.",
+                table(shown, numeric=("Questions", "Catalog rows", "Recall@5", "MRR")),
+            ),
+            section(
+                "Limits",
+                "Read the numbers with these in mind.",
+                "<ul>" + "".join(f"<li>{esc(item)}</li>" for item in LIMITS) + "</ul>",
+            ),
+        ]
+    )
     return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Retrieval evaluation</title><style>{CSS}</style></head><body><main>{body}</main></body></html>'
 
 

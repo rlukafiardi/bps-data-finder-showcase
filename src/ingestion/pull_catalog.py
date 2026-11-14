@@ -24,7 +24,7 @@ import json
 import os
 import sys
 import time
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import httpx
@@ -45,14 +45,13 @@ MARKER = RAW / "refresh_started"
 cutoff = None  # epoch seconds: a cached page older than this is fetched again
 
 
-
 class Stop(Exception):
     pass
 
 
 def log(path, status):
     with LOG.open("a") as f:
-        f.write(f"{datetime.now(timezone.utc).isoformat()}\t{status}\t{path}\n")
+        f.write(f"{datetime.now(UTC).isoformat()}\t{status}\t{path}\n")
 
 
 def get(client, path, params, out):
@@ -103,7 +102,9 @@ def pull_pages(client, path, params, folder, deadline):
 
 
 def search_short(domain):
-    pages = [json.loads(p.read_text())["data"] for p in sorted((RAW / "search" / domain / "tablestatistic").glob("p*.json"))]
+    pages = [
+        json.loads(p.read_text())["data"] for p in sorted((RAW / "search" / domain / "tablestatistic").glob("p*.json"))
+    ]
     if not pages or not pages[0]:
         return False
     return len({r["url"] for p in pages for r in p[1]}) < pages[0][0]["total"]

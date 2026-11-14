@@ -1,6 +1,6 @@
 """Write the search indexes the API loads at start: BM25 and the embedding matrix, for the current catalog.
 
-    uv run python -m src.retrieval.save_index
+uv run python -m src.retrieval.save_index
 """
 
 import pandas as pd

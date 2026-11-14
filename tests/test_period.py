@@ -16,7 +16,11 @@ def test_month_quarter_year_in_titles_and_questions():
 
 
 def test_month_and_year_glued_together():
-    assert named("Penumpang penerbangan di Provinsi Aceh pada bulan Desember2024 mencapai 41.810 orang") == ({12}, set(), {2024})
+    assert named("Penumpang penerbangan di Provinsi Aceh pada bulan Desember2024 mencapai 41.810 orang") == (
+        {12},
+        set(),
+        {2024},
+    )
 
 
 def test_ranges_cover_every_month_and_year_in_between():
@@ -55,7 +59,11 @@ def test_dalam_angka_tables_use_the_years_bps_has_them_for():
 
 
 def test_latest_year_of_a_row():
-    archive = {"title": "Jumlah Penduduk Miskin Menurut Kabupaten/Kota (Ribu Orang), 2002-2016", "type": "statictable", "years": None}
+    archive = {
+        "title": "Jumlah Penduduk Miskin Menurut Kabupaten/Kota (Ribu Orang), 2002-2016",
+        "type": "statictable",
+        "years": None,
+    }
     assert latest_year(archive) == 2016
     assert latest_year({"title": "Luas Daerah", "type": "simdasi", "years": [2023, 2025]}) == 2025
     assert latest_year({"title": "Jumlah Penduduk Miskin (Ribu Jiwa)", "type": "var", "years": None}) is None

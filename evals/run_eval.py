@@ -47,13 +47,15 @@ def score(method, golden):
         targets = set(gold["targets"].split("|"))
         results = method.search(gold["question"], k=K).to_dict("records")
         rank = next((i + 1 for i, r in enumerate(results) if keys(r) & targets), None)
-        out.append({
-            "question": gold["question"],
-            "source": gold["source"],
-            "type": gold["targets"].split(":")[0],
-            "rank": rank,
-            "top1": f"{results[0]['type']}:{results[0]['domain']} {results[0]['title'][:60]}" if results else "",
-        })
+        out.append(
+            {
+                "question": gold["question"],
+                "source": gold["source"],
+                "type": gold["targets"].split(":")[0],
+                "rank": rank,
+                "top1": f"{results[0]['type']}:{results[0]['domain']} {results[0]['title'][:60]}" if results else "",
+            }
+        )
     df = pd.DataFrame(out)
     df["recall@5"] = df["rank"].le(5)
     df["mrr"] = 1 / df["rank"].fillna(float("inf"))
@@ -75,8 +77,12 @@ def check_targets(golden, catalog):
 
 
 def code_version():
-    short = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
-    dirty = subprocess.run(["git", "status", "--porcelain", "--", "src", "evals", "app"], capture_output=True, text=True, check=True).stdout.strip()
+    short = subprocess.run(
+        ["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, check=True
+    ).stdout.strip()
+    dirty = subprocess.run(
+        ["git", "status", "--porcelain", "--", "src", "evals", "app"], capture_output=True, text=True, check=True
+    ).stdout.strip()
     return short + ("+dirty" if dirty else "")
 
 
@@ -87,11 +93,24 @@ def record(results, catalog_rows):
     with HISTORY.open("a", newline="") as f:
         out = csv.writer(f)
         if new:
-            out.writerow(["date", "source", "catalog_rows", "n", "method", "recall5", "recall5_lo", "recall5_hi", "mrr"])
+            out.writerow(
+                ["date", "source", "catalog_rows", "n", "method", "recall5", "recall5_lo", "recall5_hi", "mrr"]
+            )
         for name, df in results.items():
             lo, hi = interval(df["recall@5"])
-            out.writerow([date.today(), code_version(), catalog_rows, len(df), name,
-                          round(df["recall@5"].mean(), 3), round(lo, 3), round(hi, 3), round(df["mrr"].mean(), 3)])
+            out.writerow(
+                [
+                    date.today(),
+                    code_version(),
+                    catalog_rows,
+                    len(df),
+                    name,
+                    round(df["recall@5"].mean(), 3),
+                    round(lo, 3),
+                    round(hi, 3),
+                    round(df["mrr"].mean(), 3),
+                ]
+            )
 
 
 def main(smoke):

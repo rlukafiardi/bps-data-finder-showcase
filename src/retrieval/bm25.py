@@ -9,7 +9,23 @@ import numpy as np
 
 from src.retrieval.regions import domains
 
-STOPWORDS = {"dan", "di", "yang", "menurut", "dengan", "atau", "dari", "ke", "per", "pada", "the", "of", "and", "by", "in"}
+STOPWORDS = {
+    "dan",
+    "di",
+    "yang",
+    "menurut",
+    "dengan",
+    "atau",
+    "dari",
+    "ke",
+    "per",
+    "pada",
+    "the",
+    "of",
+    "and",
+    "by",
+    "in",
+}
 TOKEN = re.compile(r"[a-z0-9]+")
 
 
@@ -32,7 +48,9 @@ def bm25_text(row):
 def fingerprint(catalog):
     """Changes when a row, its text or the row order changes: a saved index is only valid for the catalog it was built from."""
     texts = (bm25_text(r) for r in catalog.to_dict("records"))
-    return hashlib.sha256("\n".join(f"{d}\t{t}" for d, t in zip(catalog["doc_id"], texts)).encode()).hexdigest()
+    return hashlib.sha256(
+        "\n".join(f"{d}\t{t}" for d, t in zip(catalog["doc_id"], texts, strict=True)).encode()
+    ).hexdigest()
 
 
 class BM25:
@@ -41,7 +59,9 @@ class BM25:
     def __init__(self, catalog, saved=None):
         self.catalog = catalog.reset_index(drop=True)
         if saved:
-            assert (Path(saved) / "fingerprint.txt").read_text() == fingerprint(self.catalog), f"{saved} was built from another catalog: rebuild it"
+            assert (Path(saved) / "fingerprint.txt").read_text() == fingerprint(self.catalog), (
+                f"{saved} was built from another catalog: rebuild it"
+            )
             self.model = bm25s.BM25.load(saved, mmap=True, show_progress=False)
         else:
             self.model = bm25s.BM25()

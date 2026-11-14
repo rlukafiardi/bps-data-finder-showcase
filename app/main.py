@@ -1,6 +1,6 @@
 """Search API for the BPS data finder: question -> top 5 BPS sources with public links.
 
-    ALLOWED_ORIGINS=http://localhost:8080 uv run uvicorn app.main:app --port 8000
+ALLOWED_ORIGINS=http://localhost:8080 uv run uvicorn app.main:app --port 8000
 """
 
 import json
@@ -17,13 +17,13 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from src.retrieval.bm25 import BM25
-from src.retrieval.dense import Dense, Hybrid
 from src.retrieval.coverage import no_match
+from src.retrieval.dense import Dense, Hybrid
 from src.retrieval.period import latest_year
 from src.retrieval.region_rank import RegionRank, close_matches
 from src.retrieval.regions import domains, find_regions
 from src.retrieval.rewrite import Rewriter
-from src.values.bps import Busy, BpsError
+from src.values.bps import BpsError, Busy
 from src.values.tables import mark_regions, simdasi_table, static_table, var_table
 
 CATALOG = "data/processed/catalog.parquet"
@@ -112,7 +112,18 @@ def api_search(request: Request, q: str = Query(min_length=2, max_length=200)):
     nothing = bool(len(hits)) and no_match(text, hits.iloc[0])
     hits = hits.astype(object).where(hits.notna(), None)
     # question text only, no IP: real queries become the next golden set
-    print(json.dumps({"event": "search", "q": q, "rewrite": rewrite is not None, "no_match": nothing, "results": hits["doc_id"].tolist()}), flush=True)
+    print(
+        json.dumps(
+            {
+                "event": "search",
+                "q": q,
+                "rewrite": rewrite is not None,
+                "no_match": nothing,
+                "results": hits["doc_id"].tolist(),
+            }
+        ),
+        flush=True,
+    )
     return {
         "question": q,
         "rewrite": rewrite,
@@ -161,12 +172,12 @@ def api_value(
         else:
             raise HTTPException(400, "Publikasi dan Berita Resmi Statistik hanya berupa tautan ke BPS.")
     except ValueError:
-        raise HTTPException(400, "Periode tidak tersedia.")
+        raise HTTPException(400, "Periode tidak tersedia.") from None
     except Busy:
-        raise HTTPException(429, "Sedang ramai. Coba lagi sebentar.")
+        raise HTTPException(429, "Sedang ramai. Coba lagi sebentar.") from None
     except BpsError as e:
         print(json.dumps({"event": "bps_error", "doc_id": doc_id, "error": str(e)}), flush=True)
-        raise HTTPException(502, "BPS belum menjawab. Coba lagi nanti.")
+        raise HTTPException(502, "BPS belum menjawab. Coba lagi nanti.") from e
     table["fetched_at"] = pd.Timestamp(table["fetched_at"], unit="s", tz="UTC").isoformat(timespec="seconds")
     print(json.dumps({"event": "value", "doc_id": doc_id, "period": table["period"]}), flush=True)
     return {
