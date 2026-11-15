@@ -1,3 +1,5 @@
+> **This repository has moved.** The full project, with its history, decision log and LinkedIn drafts, is now at **[rlukafiardi/bps-data-finder](https://github.com/rlukafiardi/bps-data-finder)**. This copy is archived and no longer updated.
+
 # Cari Data BPS
 
 A search for Indonesian official statistics. Type a question in plain Bahasa Indonesia, such as "jumlah penduduk miskin kabupaten garut", and get the BPS table,
